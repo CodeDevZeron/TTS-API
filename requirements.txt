@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+TTS
+faster-whisper
+soundfile
+numpy
+pydantic
+aiofiles
+PyGithub
