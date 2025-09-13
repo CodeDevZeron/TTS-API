@@ -1,9 +1,8 @@
 fastapi
 uvicorn
-TTS
-faster-whisper
-soundfile
+TTS==0.13.2
+PyGithub
 numpy
+soundfile
 pydantic
 aiofiles
-PyGithub
