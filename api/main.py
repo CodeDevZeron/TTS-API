@@ -7,21 +7,21 @@ import os
 from TTS.api import TTS
 from github import Github
 
-app = FastAPI(title="Bangla+English TTS & STT API by DevZeron")
+app = FastAPI(title="Bangla+English TTS API by DevZeron")
 
 # ---------- CONFIG ----------
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # set in Vercel env
 REPO_NAME = "CodeDevZeron/Zeron"
-REPO_PATH = "Zeron"  # folder path inside repo
+REPO_PATH = "Zeron"  # folder inside repo
 BRANCH = "main"
 
-# ---------- INIT MODELS ----------
+# ---------- INIT ----------
 tts = TTS("tts_models/multilingual/multi-dataset/your_tts")
 TMP = Path("/tmp")
 TMP.mkdir(exist_ok=True)
 
 # ---------- FUNCTIONS ----------
-def upload_to_github(text):
+def upload_to_github(text: str):
     # 1. Generate TTS audio
     audio_file = TMP / f"{uuid.uuid4().hex}.wav"
     tts.tts_to_file(text=text, file_path=str(audio_file))
@@ -34,7 +34,7 @@ def upload_to_github(text):
     with open(audio_file, "rb") as f:
         content = f.read()
 
-    # 4. Commit to repo
+    # 4. Commit file
     filename = f"tts_{uuid.uuid4().hex}.wav"
     repo.create_file(
         f"{REPO_PATH}/{filename}",
@@ -43,7 +43,7 @@ def upload_to_github(text):
         branch=BRANCH
     )
 
-    # 5. Raw GitHub URL
+    # 5. Return raw GitHub URL
     raw_url = f"https://raw.githubusercontent.com/{REPO_NAME}/{BRANCH}/{REPO_PATH}/{filename}"
     return raw_url
 
